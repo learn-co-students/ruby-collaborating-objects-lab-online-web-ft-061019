@@ -8,26 +8,38 @@ class Artist
    def initialize(name)
       self.name = name
       self.songs = []
-      self.save
    end
 
    def save
       @@all << self
    end
 
+   def self.create(name)
+      new_artist = self.new(name)
+      new_artist.save
+      new_artist
+   end
+
    def add_song(song_object)
-      song_object.artist = self
+      #binding.pry
+      # song_object.artist = self
       self.songs << song_object
+      #self.find ? song_object : self.save
    end
 
    def self.all
       @@all
    end
 
+   def self.find(artist_name)
+      @@all.find {|artist_object| artist_object.name == artist_name}
+   end
+
    def self.find_or_create_by_name(artist_name)
-      is_found = @@all.find {|artist_object| artist_object.name == artist_name}
+      found = self.find(artist_name)
       #binding.pry
-      is_found ? is_found : self.new(artist_name)
+      found ? found : self.create(artist_name)
+      #binding.pry
    end
 
    def print_songs
